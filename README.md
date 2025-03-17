@@ -3,4 +3,4 @@
 # in each of the nodes of the langgraph
 # we should then do data analysis work with tabeleau on growing depression amongst people and in certain areas.
 # The backend folder contains all LLM calls,
-# while the front end is everything else, please use npm run dev
+# while the front end is everything else, please use npm run start
