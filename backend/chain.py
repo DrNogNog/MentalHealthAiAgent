@@ -18,7 +18,7 @@ actor_prompt_template = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            """You are an expert psychiatrist.
+            """You are an expert psychiatrist. Please tell me what kind of depressive disorder this patient's input is going through.
 Current time: {time}
 
 1. {first_instruction}

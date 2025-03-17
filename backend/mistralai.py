@@ -1,5 +1,9 @@
 import os
+from dotenv import load_dotenv
 from mistralai.client import MistralClient
+from langgraph.prebuilt import ToolInvocation, ToolExecutor
+# Load environment variables
+load_dotenv()
 
 # Set up API Key and Model
 api_key = os.getenv("MISTRAL_API_KEY")
@@ -28,16 +32,6 @@ class MistralSearchTool:
 # Example Usage
 if __name__ == "__main__":
     search_tool = MistralSearchTool(model=model)
-    result = search_tool.search("")
-
-    # Another direct chat example
-    # chat_response = client.chat(
-    #     model=model,
-    #     messages=[
-    #         {
-    #             "role": "user",
-    #             "content": "What is the best French cheese?",
-    #         }
-    #     ],
-    # )
-    #print("Chat Response:", chat_response.choices[0].message.content)
+    result = search_tool.search("Get me the text in summary format.")
+    tool_executor = ToolExecutor([result])
+    
