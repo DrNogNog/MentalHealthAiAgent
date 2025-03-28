@@ -70,3 +70,13 @@ This is the file that holds the ai used to read the document and process its con
 
 # schemas.py, tool_executor.py 
 These files are currently not being used at all.
+
+
+
+
+#############
+Please run on chrome browser
+To Run install dependencies
+npm install
+then run command
+npm run start
