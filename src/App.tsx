@@ -10,6 +10,12 @@ const suggestions = {
     "Contact friends to plan a group dinner together",
     "Reach out to family members for a weekend gathering",
     "Schedule a coffee date with your best friend",
+    "Plan a movie night with your closest friends",
+    "Organize a game night with your social circle",
+    "Ask a friend to join you for a walk in the park",
+    "Connect with an old friend you miss",
+    "Share your feelings with someone you trust",
+    "Join a local community group or club",
   ],
   Steve: [
     "Plan a movie night with your closest friends",
