@@ -4,10 +4,11 @@ import OpenAI from 'openai';
 
 interface VoiceSynthesizerProps {
   name: string;
+  message: string;  // Add the message prop
+  setMessage: React.Dispatch<React.SetStateAction<string>>;  // Add setMessage prop
 }
 
-const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name }) => {
-  const [text, setText] = useState('');
+const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setMessage }) => {
   const [response, setResponse] = useState('');
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string>('');
@@ -109,7 +110,7 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name }) => {
             },
             { 
               role: "user", 
-              content: text 
+              content: message  // Use the message prop here
             }
           ],
           model: "gpt-3.5-turbo",
@@ -158,16 +159,16 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name }) => {
           </label>
           <div className="relative">
             <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
+              value={message}  // Use message as the value
+              onChange={(e) => setMessage(e.target.value)}  // Use setMessage to update message
               className="w-full px-3 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               rows={3}
               placeholder="Speak or type your message..."
               readOnly={isListening}
             />
-            {text && (
+            {message && (
               <div className="absolute right-2 top-2 text-xs text-gray-500">
-                {text.length} characters
+                {message.length} characters
               </div>
             )}
           </div>

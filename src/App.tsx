@@ -5,17 +5,23 @@ import VoiceSynthesizer from './components/VoiceSynthesizer';
 import Navbar from './components/Navbar';
 import UploadPage from './components/UploadPage';
 
-const suggestions = [
-  "Contact friends to plan a group dinner together",
-  "Reach out to family members for a weekend gathering",
-  "Schedule a coffee date with your best friend",
-  "Plan a movie night with your closest friends",
-  "Organize a game night with your social circle",
-  "Ask a friend to join you for a walk in the park",
-  "Connect with an old friend you miss",
-  "Share your feelings with someone you trust",
-  "Join a local community group or club"
-];
+const suggestions = {
+  Greg: [
+    "Contact friends to plan a group dinner together",
+    "Reach out to family members for a weekend gathering",
+    "Schedule a coffee date with your best friend",
+  ],
+  Steve: [
+    "Plan a movie night with your closest friends",
+    "Organize a game night with your social circle",
+    "Ask a friend to join you for a walk in the park",
+  ],
+  Nancy: [
+    "Connect with an old friend you miss",
+    "Share your feelings with someone you trust",
+    "Join a local community group or club",
+  ]
+};
 
 const voices = [
   { name: "Greg", color: "from-blue-500 to-blue-600" },
@@ -25,13 +31,20 @@ const voices = [
 
 function App() {
   const [message, setMessage] = useState('');
+  const [messageTwo, setMessageTwo] = useState('');
   const [email, setEmail] = useState('');
   const [activeVoice, setActiveVoice] = useState(0);
   const [direction, setDirection] = useState('');
+  const [currentSuggestions, setCurrentSuggestions] = useState(suggestions[voices[activeVoice].name]);
 
   const handleVoiceChange = (newIndex: number) => {
     setDirection(newIndex > activeVoice ? 'left' : 'right');
     setActiveVoice(newIndex);
+    setCurrentSuggestions(suggestions[voices[newIndex].name]);
+    setMessage(suggestions[voices[newIndex].name][0]); // Set the first suggestion for the selected voice
+  };
+  const handleChangeTwo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessageTwo(e.target.value);  // Update state with the new message
   };
 
   const handleSendEmail = () => {
@@ -54,16 +67,12 @@ function App() {
           </div>
           
           <div className="grid grid-cols-3 gap-3">
-            {suggestions.map((suggestion, index) => (
+            {currentSuggestions.map((suggestion, index) => (
               <div
                 key={index}
                 className="bg-white bg-opacity-10 rounded-lg p-3 hover:bg-opacity-20 transition-colors cursor-pointer"
                 onClick={() => {
-                  const textArea = document.querySelector('textarea');
-                  if (textArea) {
-                    textArea.value = suggestion;
-                    textArea.dispatchEvent(new Event('change', { bubbles: true }));
-                  }
+                    setMessage(suggestion);  // Set the clicked suggestion in the message state
                 }}
               >
                 <div className="flex items-center gap-2 text-white">
@@ -81,7 +90,7 @@ function App() {
           <main className="container mx-auto px-4 py-8">
             {/* Voice Selection Tabs */}
             <div className="flex justify-center mb-4">
-              <div className="bg-white rounded-full shadow-md p-1 flex gap-1">
+            <div className="bg-white rounded-full shadow-md p-1 flex gap-1">
                 {voices.map((voice, index) => (
                   <button
                     key={index}
@@ -117,24 +126,26 @@ function App() {
                 </button>
               </div>
 
-              <div className="relative h-[400px]">
-                {voices.map((voice, index) => (
-                  <div
-                    key={voice.name}
-                    className={`absolute w-full transition-all duration-500 ${
-                      index === activeVoice
-                        ? 'opacity-100 translate-x-0 z-20'
-                        : index < activeVoice
-                        ? 'opacity-0 -translate-x-full z-10'
-                        : 'opacity-0 translate-x-full z-10'
-                    }`}
-                  >
-                    <div className={`bg-gradient-to-br ${voice.color} rounded-xl p-6 shadow-lg`}>
-                      <VoiceSynthesizer name={voice.name} />
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className="relative h-[400px]">
+            {voices.map((voice, index) => (
+    <div
+      key={voice.name}
+      className={`absolute w-full transition-all duration-500 ${
+        index === activeVoice
+          ? 'opacity-100 translate-x-0 z-20'
+          : index < activeVoice
+          ? 'opacity-0 -translate-x-full z-10'
+          : 'opacity-0 translate-x-full z-10'
+      }`}
+    >
+      <div className={`bg-gradient-to-br ${voice.color} rounded-xl p-6 shadow-lg`}>
+        {/* Pass message and setMessage to VoiceSynthesizer */}
+        <VoiceSynthesizer name={voice.name} message={message} setMessage={setMessage} />
+      </div>
+    </div>
+  ))}
+</div>
+
 
               {/* Mobile-friendly dots */}
               <div className="flex justify-center gap-2 mt-4 md:hidden">
@@ -175,8 +186,8 @@ function App() {
                       rows={4}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                       placeholder="Type your message here..."
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
+                      value={messageTwo}
+                      onChange={handleChangeTwo}
                     />
                   </div>
                   
