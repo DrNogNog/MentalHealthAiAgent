@@ -7,15 +7,13 @@
 #                                               -> extract information from section             ---> 
 # This is a note on the general idea:
 # 0) get person's query  (text variable VoiceSynthesizer.tsx)
-# 1) read textbook 
-# 2) go to toc contents 
-# 3) read textbook contents 
-# 4) extract information 
-# 5) calculate potential of user to fit into symptoms and conditions based on query
-# 6) formulate potential responses to user based on weighted potentials
-# 7) formulate and send response to user
-# 8) generate excel document (chart; issue; symptoms; things that might help) 
-# 9) send to email
+# 1) read textbook        (RAG)
+# 2) extract information  
+# 3) calculate potential of user to fit into symptoms and conditions based on query
+# 4) formulate potential responses to user based on weighted potentials
+# 5) formulate and send response to user
+# 6) generate excel document (chart; issue; symptoms; things that might help) 
+# 7) send to email
 
 # There are two ways we can do this:
 # Method 1) Based on Bob Ziroll's course content module 2 on coursera
