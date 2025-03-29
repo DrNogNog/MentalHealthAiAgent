@@ -10,6 +10,7 @@ interface VoiceSynthesizerProps {
 
 const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setMessage }) => {
   const [response, setResponse] = useState('');
+  const [text, setText] = useState('');
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string>('');
   const [isListening, setIsListening] = useState(false);
@@ -159,7 +160,7 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
           </label>
           <div className="relative">
             <textarea
-              value={message}  // Use message as the value
+              value={text}  // Use message as the value
               onChange={(e) => setMessage(e.target.value)}  // Use setMessage to update message
               className="w-full px-3 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               rows={3}
