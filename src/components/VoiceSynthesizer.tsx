@@ -15,6 +15,7 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [text,setText] = useState('');
 
   const getPersonalityPrompt = () => {
     switch (name) {
@@ -28,6 +29,28 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
         return "You are a helpful AI assistant. Please provide a clear and informative response.";
     }
   };
+
+  const fetchData = async (inputText: string) => {
+    try {
+      const response = await fetch(`http://localhost:5173/api/data?query=${inputText}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({query:inputText}),
+      });
+      const data = await response.json();
+      setResponse(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    if (text) {
+      fetchData(text);
+    }
+  }, [text]);
+
 
   useEffect(() => {
     const loadVoices = () => {
@@ -110,7 +133,7 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
             },
             { 
               role: "user", 
-              content: message  // Use the message prop here
+              content: text  // Use the message prop here
             }
           ],
           model: "gpt-3.5-turbo",
@@ -159,7 +182,7 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
           </label>
           <div className="relative">
             <textarea
-              value={message}  // Use message as the value
+              value={text}  // Use message as the value
               onChange={(e) => setMessage(e.target.value)}  // Use setMessage to update message
               className="w-full px-3 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
               rows={3}
