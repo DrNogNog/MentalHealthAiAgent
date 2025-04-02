@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Upload, User, Hexagon, Phone, MessageSquare, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
 import VoiceSynthesizer from './components/VoiceSynthesizer';
@@ -50,7 +50,7 @@ function App() {
     setMessage(suggestions[voices[newIndex].name][0]); // Set the first suggestion for the selected voice
   };
   const handleChangeTwo = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessageTwo(e.target.value);  // Update state with the new message
+    setMessageTwo(e.target.value.trim());  // Update state with the new message
   };
 
   const handleSendEmail = () => {
@@ -60,6 +60,27 @@ function App() {
     }
     alert('Message will be sent to your email: ' + email);
   };
+
+  const fetchData = async (inputText: string) => {
+      try {
+        const response = await fetch(`http://localhost:5173/api/data?query=${inputText}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({query:inputText}),
+        });
+        const data = await response.json();
+        console.log('Fetched Data:', data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  useEffect(() => {
+    if (messageTwo.trim()) {
+      fetchData(messageTwo);
+    }
+  }, [messageTwo]);
 
   return (
     <div className="min-h-screen bg-purple-50">
@@ -76,7 +97,7 @@ function App() {
             {currentSuggestions.map((suggestion, index) => (
               <div
                 key={index}
-                className="bg-white bg-opacity-10 rounded-lg p-3 hover:bg-opacity-20 transition-colors cursor-pointer"
+                className="bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-transform transform hover:scale-110"
                 onClick={() => {
                     setMessage(suggestion);  // Set the clicked suggestion in the message state
                 }}
