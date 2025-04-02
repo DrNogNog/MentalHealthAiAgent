@@ -16,6 +16,7 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [text,setText] = useState('');
 
   const getPersonalityPrompt = () => {
     switch (name) {
@@ -29,6 +30,28 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
         return "You are a helpful AI assistant. Please provide a clear and informative response.";
     }
   };
+
+  const fetchData = async (inputText: string) => {
+    try {
+      const response = await fetch(`http://localhost:5173/api/data?query=${inputText}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({query:inputText}),
+      });
+      const data = await response.json();
+      setResponse(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    if (text) {
+      fetchData(text);
+    }
+  }, [text]);
+
 
   useEffect(() => {
     const loadVoices = () => {
@@ -111,7 +134,7 @@ const VoiceSynthesizer: React.FC<VoiceSynthesizerProps> = ({ name, message, setM
             },
             { 
               role: "user", 
-              content: message  // Use the message prop here
+              content: text  // Use the message prop here
             }
           ],
           model: "gpt-3.5-turbo",
