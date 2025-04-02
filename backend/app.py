@@ -14,6 +14,11 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
 
-data = receive_data()
+#data = receive_data()
+#import requests
+#url = "http://127.0.0.1:5000/api/data"
+#response = requests.get(url)
+#print(response.json())
 
-mail = GmailSendMessage("Hello")
+#email tool
+#mail = GmailSendMessage("Hello")
