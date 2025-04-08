@@ -12,6 +12,9 @@ class TextProcessor:
         self.model_name = model_name
         self.temperature = temperature
         
+        # Directly set the OpenAI API key (not recommended for security reasons)
+        self.openai_api_key = "your_openai_api_key_here"
+        
         self._process_text()
 
     def _process_text(self):
